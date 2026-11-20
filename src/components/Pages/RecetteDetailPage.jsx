@@ -10,20 +10,18 @@ import Chargement from "../Utils/Chargement";
 import Erreur from "../Utils/Error";
 
 function retour() {
-  // Adresse ouverte directement : pas d'écran précédent, on renvoie à la liste
   if (router.canGoBack()) router.back();
   else router.replace("/recettes");
 }
 
-// La fiche se charge à partir de l'id de l'adresse : /recettes/R03 marche ouverte directement
 export default function RecetteDetailPage({ id }) {
   const idsFavoris = useFavorisStore((state) => state.idsFavoris);
   const basculerFavori = useFavorisStore((state) => state.basculerFavori);
 
   const [recette, setRecette] = useState(null);
-  const [statut, setStatut] = useState("chargement"); // chargement / succes / introuvable / erreur
+  const [statut, setStatut] = useState("chargement");
   const [erreur, setErreur] = useState(null);
-  const [essai, setEssai] = useState(0); // « Réessayer » l'incrémente pour relancer l'effet
+  const [essai, setEssai] = useState(0);
 
   useEffect(() => {
     let ignorer = false;
