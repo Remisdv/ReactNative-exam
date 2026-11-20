@@ -42,6 +42,7 @@ Desktop.ini
 
 # Claude Code (local settings only)
 .claude/settings.local.json
+.claude/launch.json
 
 # local env files
 .env
