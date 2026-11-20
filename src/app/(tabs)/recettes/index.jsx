@@ -1,9 +1,9 @@
-import { SafeAreaView, Text } from "react-native";
+import { Text, View } from "react-native";
 
 export default function Recettes() {
   return (
-    <SafeAreaView>
+    <View>
       <Text>Recettes Page</Text>
-    </SafeAreaView>
+    </View>
   );
 }

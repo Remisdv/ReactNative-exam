@@ -5,7 +5,7 @@ export default function TabLayout() {
     <NativeTabs>
       <NativeTabs.Trigger name="recettes">
         <NativeTabs.Trigger.Label>Recettes</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="house.fill" md="restaurant" />
+        <NativeTabs.Trigger.Icon sf="fork.knife" md="restaurant" />
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="favoris">
         <NativeTabs.Trigger.Icon sf="heart" md="favorite" />
