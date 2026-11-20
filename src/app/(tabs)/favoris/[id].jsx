@@ -1,7 +1,2 @@
-import { useLocalSearchParams } from "expo-router";
-import RecetteDetail from "../../../components/RecetteDetail";
-
-export default function DetailRecetteFavoris() {
-  const { id } = useLocalSearchParams();
-  return <RecetteDetail id={id} />;
-}
+// Même fiche que dans l'onglet Recettes, mais dans la pile Favoris : le retour revient aux favoris
+export { default } from "../recettes/[id]";
