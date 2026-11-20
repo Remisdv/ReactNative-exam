@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
 import RecetteCard from "../../../components/RecetteCard";
 import Chargement from "../../../components/Utils/Chargement";
@@ -28,19 +28,16 @@ export default function Favoris() {
           <Text style={styles.vide}>Aucun favori. Touchez ♡ sur une recette.</Text>
         }
         renderItem={({ item }) => (
-          <View>
-            <RecetteCard
-              titre={item.titre}
-              categorie={item.categorie}
-              duree={item.duree}
-              difficulte={item.difficulte}
-              image={item.image}
-              onPress={() => router.push(`/favoris/${item.id}`)}
-            />
-            <Pressable style={styles.coeur} hitSlop={10} onPress={() => basculerFavori(item.id)}>
-              <Text style={styles.coeurTexte}>♥</Text>
-            </Pressable>
-          </View>
+          <RecetteCard
+            titre={item.titre}
+            categorie={item.categorie}
+            duree={item.duree}
+            difficulte={item.difficulte}
+            image={item.image}
+            onPress={() => router.push(`/favoris/${item.id}`)}
+            estFavori
+            onToggleFavori={() => basculerFavori(item.id)}
+          />
         )}
       />
     </View>
@@ -50,16 +47,4 @@ export default function Favoris() {
 const styles = StyleSheet.create({
   ecran: { flex: 1, padding: 12, backgroundColor: "#f2f2f2" },
   vide: { textAlign: "center", marginTop: 20 },
-  coeur: {
-    position: "absolute",
-    top: 16,
-    right: 16,
-    backgroundColor: "#fff",
-    borderRadius: 18,
-    width: 36,
-    height: 36,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  coeurTexte: { fontSize: 22, color: "#e0245e" },
 });
