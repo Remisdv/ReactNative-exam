@@ -23,7 +23,7 @@ export default function RecetteDetail({ recette }) {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.contenu}>
+    <ScrollView contentContainerStyle={styles.contenu} contentInsetAdjustmentBehavior="automatic">
       {recette.image ? (
         <Image source={recette.image} style={styles.image} />
       ) : (

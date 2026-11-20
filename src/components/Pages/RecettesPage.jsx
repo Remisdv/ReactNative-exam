@@ -17,7 +17,6 @@ export default function RecettesPage() {
   const basculerFavori = useFavorisStore((state) => state.basculerFavori);
 
   const [mode, setMode] = useState(modeActuel());
-  // Rempli par RecetteFilter (la recherche et la protection anti-réponses tardives sont dedans)
   const [filtre, setFiltre] = useState({ categorie: "Toutes", resultats: null });
 
   function changerMode(nouveauMode) {
@@ -27,48 +26,47 @@ export default function RecettesPage() {
     charger();
   }
 
-  // « Toutes » = la liste du store (qui gère les 4 états), sinon la réponse de la catégorie
   const liste = filtre.categorie === "Toutes" ? recettes : filtre.resultats;
 
-  function contenu() {
+  function etatVide() {
     if (statut === "inactif" || statut === "chargement") return <Chargement />;
     if (statut === "erreur") return <Erreur message={erreur} onRetry={charger} />;
     if (liste === null) return <Chargement texte="Recherche..." />;
-    return (
-      <FlatList
-        data={liste}
-        keyExtractor={(recette) => recette.id}
-        contentInsetAdjustmentBehavior="automatic"
-        ListEmptyComponent={<Text style={styles.vide}>Aucune recette.</Text>}
-        renderItem={({ item }) => (
-          <RecetteCard
-            titre={item.titre}
-            categorie={item.categorie}
-            duree={item.duree}
-            difficulte={item.difficulte}
-            image={item.image}
-            onPress={() => router.push(`/recettes/${item.id}`)}
-            estFavori={idsFavoris.includes(item.id)}
-            onToggleFavori={() => basculerFavori(item.id)}
-          />
-        )}
-      />
-    );
+    return <Text style={styles.vide}>Aucune recette.</Text>;
   }
 
   return (
-    <View style={styles.ecran}>
-      <DemoComponent mode={mode} onChange={changerMode} />
-
-      {/* key={mode} : changer de mode recrée le filtre, qui repart sur « Toutes » */}
-      <RecetteFilter key={mode} onChange={setFiltre} />
-
-      {contenu()}
-    </View>
+    <FlatList
+      style={styles.ecran}
+      contentContainerStyle={styles.contenu}
+      contentInsetAdjustmentBehavior="automatic"
+      data={statut === "succes" && liste ? liste : []}
+      keyExtractor={(recette) => recette.id}
+      ListHeaderComponent={
+        <View>
+          <DemoComponent mode={mode} onChange={changerMode} />
+          <RecetteFilter key={mode} onChange={setFiltre} />
+        </View>
+      }
+      ListEmptyComponent={etatVide()}
+      renderItem={({ item }) => (
+        <RecetteCard
+          titre={item.titre}
+          categorie={item.categorie}
+          duree={item.duree}
+          difficulte={item.difficulte}
+          image={item.image}
+          onPress={() => router.push(`/recettes/${item.id}`)}
+          estFavori={idsFavoris.includes(item.id)}
+          onToggleFavori={() => basculerFavori(item.id)}
+        />
+      )}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  ecran: { flex: 1, padding: 12, backgroundColor: "#f2f2f2" },
+  ecran: { flex: 1, backgroundColor: "#f2f2f2" },
+  contenu: { padding: 12 },
   vide: { textAlign: "center", marginTop: 20 },
 });
