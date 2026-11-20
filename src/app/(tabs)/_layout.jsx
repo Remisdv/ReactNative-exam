@@ -1,4 +1,4 @@
-import { NativeTabs } from 'expo-router/native-tabs';
+import { NativeTabs } from "expo-router/native-tabs";
 
 export default function TabLayout() {
   return (
@@ -7,7 +7,7 @@ export default function TabLayout() {
         <NativeTabs.Trigger.Label>Recettes</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf="house.fill" md="restaurant" />
       </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="favorite">
+      <NativeTabs.Trigger name="favoris">
         <NativeTabs.Trigger.Icon sf="heart" md="favorite" />
         <NativeTabs.Trigger.Label>Favoris</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
