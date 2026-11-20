@@ -1,16 +1,10 @@
 import { Stack } from "expo-router";
 
-// Lien direct vers une fiche : la liste est placée en dessous,
-// donc le bouton retour ramène à la liste
-export const unstable_settings = {
-  anchor: "index",
-};
-
+// Pile de l'onglet Courses : un seul écran, mais la Stack donne l'en-tête « Mes courses »
 export default function CoursesLayout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ title: "Mes courses" }} />
-      <Stack.Screen name="[id]" options={{ title: "Détail" }} />
     </Stack>
   );
 }

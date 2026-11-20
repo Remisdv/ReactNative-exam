@@ -10,7 +10,6 @@ export const useRecetteStore = create((set, get) => ({
     erreur: null,
 
     charger: async () => {
-        // Évite de lancer deux requêtes en même temps
         if (get().statut === "chargement") return;
         set({ statut: "chargement", erreur: null });
         try {

@@ -18,19 +18,18 @@ export default function RecettesPage() {
   const basculerFavori = useFavorisStore((state) => state.basculerFavori);
 
   const [mode, setMode] = useState(modeActuel());
-  const [filtre, setFiltre] = useState({
-    categorie: "Toutes",
-    resultats: null,
-  });
+  // null = aucune catégorie touchée → liste du store (chargerRecettes, avec les 4 états du mode)
+  // sinon { categorie, resultats } envoyé par RecetteFilter (rechercherParCategorie)
+  const [filtre, setFiltre] = useState(null);
 
   function changerMode(nouveauMode) {
     choisirMode(nouveauMode);
     setMode(nouveauMode);
-    setFiltre({ categorie: "Toutes", resultats: null });
+    setFiltre(null);
     charger();
   }
 
-  const liste = filtre.categorie === "Toutes" ? recettes : filtre.resultats;
+  const liste = filtre === null ? recettes : filtre.resultats;
 
   function etatVide() {
     if (statut === "inactif" || statut === "chargement") return <Chargement />;

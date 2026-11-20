@@ -4,11 +4,15 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { rechercherParCategorie } from "../api/recettes";
 import { CATEGORIES } from "../data/recettes";
 
+// Tous les boutons (Toutes compris) utilisent rechercherParCategorie.
+// onChange reçoit { categorie, resultats } : resultats = null pendant la recherche.
 export default function RecetteFilter({ onChange }) {
-    const [categorie, setCategorie] = useState("Toutes");
+    // null = aucun bouton touché : la page affiche la liste du store (chargerRecettes)
+    const [categorie, setCategorie] = useState(null);
+    const categorieAffichee = categorie ?? "Toutes";
 
     useEffect(() => {
-        if (categorie === "Toutes") return;
+        if (categorie === null) return;
 
         let perimee = false;
 
@@ -23,7 +27,7 @@ export default function RecetteFilter({ onChange }) {
     }, [categorie, onChange]);
 
     function choisir(nouvelleCategorie) {
-        if (nouvelleCategorie === categorie) return;
+        if (nouvelleCategorie === categorieAffichee) return;
         setCategorie(nouvelleCategorie);
         onChange({ categorie: nouvelleCategorie, resultats: null });
     }
@@ -34,9 +38,9 @@ export default function RecetteFilter({ onChange }) {
                 <Pressable
                     key={c}
                     onPress={() => choisir(c)}
-                    style={[styles.bouton, categorie === c && styles.boutonActif]}
+                    style={[styles.bouton, categorieAffichee === c && styles.boutonActif]}
                 >
-                    <Text style={categorie === c ? styles.texteActif : styles.texte}>{c}</Text>
+                    <Text style={categorieAffichee === c ? styles.texteActif : styles.texte}>{c}</Text>
                 </Pressable>
             ))}
         </View>
