@@ -1,13 +1,15 @@
 import { useHeaderHeight } from "expo-router/react-navigation";
 import {
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
+    FlatList,
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
 } from "react-native";
+
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useCourseStore } from "../../store/CourseStore";
 import CourseForm from "../CourseForm";
@@ -18,36 +20,36 @@ export default function CoursesPage() {
   const hauteurEnTete = useHeaderHeight();
 
   return (
-    <KeyboardAvoidingView
-      style={styles.ecran}
-      behavior="padding"
-      enabled={Platform.OS === "android"}
-      keyboardVerticalOffset={hauteurEnTete}
-    >
-      <FlatList
-        contentContainerStyle={styles.contenu}
-        // iPhone : le contenu (formulaire compris) commence SOUS l'en-tête transparent
-        contentInsetAdjustmentBehavior="automatic"
-        data={articles}
-        keyExtractor={(article) => article} // pas de doublon, donc le nom suffit comme clé
-        // Le formulaire est dans l'en-tête de la liste pour profiter du décalage ci-dessus
-        ListHeaderComponent={<CourseForm />}
-        // Clavier ouvert : un toucher sur « Supprimer » marche du premier coup
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="on-drag"
-        // iOS : la liste peut défiler jusqu'en bas même avec le clavier ouvert
-        automaticallyAdjustKeyboardInsets
-        ListEmptyComponent={<Text style={styles.vide}>La liste de courses est vide.</Text>}
-        renderItem={({ item }) => (
-          <View style={styles.ligne}>
-            <Text style={styles.article}>{item}</Text>
-            <Pressable hitSlop={8} onPress={() => supprimerArticle(item)}>
-              <Text style={styles.supprimer}>Supprimer</Text>
-            </Pressable>
-          </View>
-        )}
-      />
-    </KeyboardAvoidingView>
+    <SafeAreaView style={styles.ecran}>
+      <KeyboardAvoidingView
+        style={styles.ecran}
+        behavior="padding"
+        enabled={Platform.OS === "android"}
+        keyboardVerticalOffset={hauteurEnTete}
+      >
+        <FlatList
+          contentContainerStyle={styles.contenu}
+          contentInsetAdjustmentBehavior="automatic"
+          data={articles}
+          keyExtractor={(article) => article}
+          ListHeaderComponent={<CourseForm />}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          automaticallyAdjustKeyboardInsets
+          ListEmptyComponent={
+            <Text style={styles.vide}>La liste de courses est vide.</Text>
+          }
+          renderItem={({ item }) => (
+            <View style={styles.ligne}>
+              <Text style={styles.article}>{item}</Text>
+              <Pressable hitSlop={8} onPress={() => supprimerArticle(item)}>
+                <Text style={styles.supprimer}>Supprimer</Text>
+              </Pressable>
+            </View>
+          )}
+        />
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 

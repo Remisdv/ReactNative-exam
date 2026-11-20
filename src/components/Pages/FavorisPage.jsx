@@ -1,8 +1,10 @@
 import { router } from "expo-router";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text } from "react-native";
 
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useFavorisStore } from "../../store/FavorisStore";
 import { useRecettes } from "../../store/RecetteStore";
+
 import RecetteCard from "../RecetteCard";
 import Chargement from "../Utils/Chargement";
 import Erreur from "../Utils/Error";
@@ -19,13 +21,15 @@ export default function FavorisPage() {
   if (statut === "erreur") return <Erreur message={erreur} onRetry={charger} />;
 
   return (
-    <View style={styles.ecran}>
+    <SafeAreaView style={styles.ecran}>
       <FlatList
         data={favoris}
         keyExtractor={(recette) => recette.id}
         contentInsetAdjustmentBehavior="automatic"
         ListEmptyComponent={
-          <Text style={styles.vide}>Aucun favori. Touchez ♡ sur une recette.</Text>
+          <Text style={styles.vide}>
+            Aucun favori. Touchez ♡ sur une recette.
+          </Text>
         }
         renderItem={({ item }) => (
           <RecetteCard
@@ -40,7 +44,7 @@ export default function FavorisPage() {
           />
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

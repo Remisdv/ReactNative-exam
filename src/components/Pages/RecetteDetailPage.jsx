@@ -2,11 +2,12 @@ import { router, Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { SafeAreaView } from "react-native-safe-area-context";
 import { chargerRecette } from "../../api/recettes";
+import { useFavorisStore } from "../../store/FavorisStore";
 import RecetteDetail from "../RecetteDetail";
 import Chargement from "../Utils/Chargement";
 import Erreur from "../Utils/Error";
-import { useFavorisStore } from "../../store/FavorisStore";
 
 function retour() {
   // Adresse ouverte directement : pas d'écran précédent, on renvoie à la liste
@@ -58,13 +59,15 @@ export default function RecetteDetailPage({ id }) {
 
   if (statut === "introuvable") {
     return (
-      <View style={styles.centre}>
-        <Text style={styles.titre}>Recette introuvable</Text>
-        <Text>Aucune recette ne correspond à « {id} ».</Text>
-        <Pressable style={styles.bouton} onPress={retour}>
-          <Text style={styles.boutonTexte}>Retour aux recettes</Text>
-        </Pressable>
-      </View>
+      <SafeAreaView style={styles.centre}>
+        <View style={styles.centre}>
+          <Text style={styles.titre}>Recette introuvable</Text>
+          <Text>Aucune recette ne correspond à « {id} ».</Text>
+          <Pressable style={styles.bouton} onPress={retour}>
+            <Text style={styles.boutonTexte}>Retour aux recettes</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
     );
   }
 
@@ -75,7 +78,9 @@ export default function RecetteDetailPage({ id }) {
           title: recette.titre,
           headerRight: () => (
             <Pressable hitSlop={10} onPress={() => basculerFavori(recette.id)}>
-              <Text style={styles.coeur}>{idsFavoris.includes(recette.id) ? "♥" : "♡"}</Text>
+              <Text style={styles.coeur}>
+                {idsFavoris.includes(recette.id) ? "♥" : "♡"}
+              </Text>
             </Pressable>
           ),
         }}
@@ -86,9 +91,20 @@ export default function RecetteDetailPage({ id }) {
 }
 
 const styles = StyleSheet.create({
-  centre: { flex: 1, alignItems: "center", justifyContent: "center", gap: 10, padding: 16 },
+  centre: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    padding: 16,
+  },
   titre: { fontSize: 18, fontWeight: "bold" },
-  bouton: { backgroundColor: "#222", paddingVertical: 10, paddingHorizontal: 20, borderRadius: 8 },
+  bouton: {
+    backgroundColor: "#222",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
   boutonTexte: { color: "#fff", fontWeight: "bold" },
   coeur: { fontSize: 24, color: "#e0245e" },
 });

@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
+import { SafeAreaView } from "react-native-safe-area-context";
 import { choisirMode, modeActuel } from "../../api/recettes";
 import { useFavorisStore } from "../../store/FavorisStore";
 import { useRecettes } from "../../store/RecetteStore";
@@ -17,7 +18,10 @@ export default function RecettesPage() {
   const basculerFavori = useFavorisStore((state) => state.basculerFavori);
 
   const [mode, setMode] = useState(modeActuel());
-  const [filtre, setFiltre] = useState({ categorie: "Toutes", resultats: null });
+  const [filtre, setFiltre] = useState({
+    categorie: "Toutes",
+    resultats: null,
+  });
 
   function changerMode(nouveauMode) {
     choisirMode(nouveauMode);
@@ -30,38 +34,41 @@ export default function RecettesPage() {
 
   function etatVide() {
     if (statut === "inactif" || statut === "chargement") return <Chargement />;
-    if (statut === "erreur") return <Erreur message={erreur} onRetry={charger} />;
+    if (statut === "erreur")
+      return <Erreur message={erreur} onRetry={charger} />;
     if (liste === null) return <Chargement texte="Recherche..." />;
     return <Text style={styles.vide}>Aucune recette.</Text>;
   }
 
   return (
-    <FlatList
-      style={styles.ecran}
-      contentContainerStyle={styles.contenu}
-      contentInsetAdjustmentBehavior="automatic"
-      data={statut === "succes" && liste ? liste : []}
-      keyExtractor={(recette) => recette.id}
-      ListHeaderComponent={
-        <View>
-          <DemoComponent mode={mode} onChange={changerMode} />
-          <RecetteFilter key={mode} onChange={setFiltre} />
-        </View>
-      }
-      ListEmptyComponent={etatVide()}
-      renderItem={({ item }) => (
-        <RecetteCard
-          titre={item.titre}
-          categorie={item.categorie}
-          duree={item.duree}
-          difficulte={item.difficulte}
-          image={item.image}
-          onPress={() => router.push(`/recettes/${item.id}`)}
-          estFavori={idsFavoris.includes(item.id)}
-          onToggleFavori={() => basculerFavori(item.id)}
-        />
-      )}
-    />
+    <SafeAreaView style={styles.ecran}>
+      <FlatList
+        style={styles.ecran}
+        contentContainerStyle={styles.contenu}
+        contentInsetAdjustmentBehavior="automatic"
+        data={statut === "succes" && liste ? liste : []}
+        keyExtractor={(recette) => recette.id}
+        ListHeaderComponent={
+          <View>
+            <DemoComponent mode={mode} onChange={changerMode} />
+            <RecetteFilter key={mode} onChange={setFiltre} />
+          </View>
+        }
+        ListEmptyComponent={etatVide()}
+        renderItem={({ item }) => (
+          <RecetteCard
+            titre={item.titre}
+            categorie={item.categorie}
+            duree={item.duree}
+            difficulte={item.difficulte}
+            image={item.image}
+            onPress={() => router.push(`/recettes/${item.id}`)}
+            estFavori={idsFavoris.includes(item.id)}
+            onToggleFavori={() => basculerFavori(item.id)}
+          />
+        )}
+      />
+    </SafeAreaView>
   );
 }
 
