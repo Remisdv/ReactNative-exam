@@ -1,9 +1,5 @@
-import { SafeAreaView, Text } from "react-native";
+import CoursesPage from "../../../components/Pages/CoursesPage";
 
 export default function Courses() {
-  return (
-    <SafeAreaView>
-      <Text>Courses Page</Text>
-    </SafeAreaView>
-  );
+  return <CoursesPage />;
 }
